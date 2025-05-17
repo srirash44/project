@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import joblib
+import os
 
 st.title("Air Quality Prediction App")
 
@@ -14,7 +15,11 @@ temp = st.slider("Temperature", -10, 50)
 humidity = st.slider("Humidity", 0, 100)
 
 features = np.array([[pm25, pm10, no2, so2, co, o3, temp, humidity]])
-model = joblib.load('models/rf_model.pkl')
+# Safely load the model using an absolute path
+BASE_DIR = os.path.dirname(__file__)
+MODEL_PATH = os.path.join(BASE_DIR, 'models', 'rf_model.pkl')
+
+model = joblib.load(MODEL_PATH)
 prediction = model.predict(features)
 
 st.subheader("Predicted AQI:")
